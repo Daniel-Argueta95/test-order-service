@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -21,7 +22,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order single(Long id) {
-        return orderRepository.getReferenceById(id);
+        Optional<Order> order = orderRepository.findById(id);
+        if(!order.isPresent()){
+            throw new RuntimeException("Order not found");
+        }
+        return order.get();
     }
 
     @Override
