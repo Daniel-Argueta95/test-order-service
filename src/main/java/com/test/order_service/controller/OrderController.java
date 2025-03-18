@@ -1,7 +1,6 @@
 package com.test.order_service.controller;
 
 import com.test.order_service.client.ProductClient;
-import com.test.order_service.dao.OrderRepository;
 import com.test.order_service.model.Order;
 import com.test.order_service.model.dto.ProductDto;
 import com.test.order_service.service.OrderService;
@@ -29,7 +28,7 @@ public class OrderController {
         ProductDto productDto = productClient.getProductById(order.getProductId());
 
         if(productDto != null){
-            order.setStatus("CONFIRMED");
+            order.setStatus(order.getStatus());
             orderService.addOrUpdate(order);
             return ResponseEntity.ok("Order changes affected successfully");
         }
@@ -48,10 +47,11 @@ public class OrderController {
         return new ResponseEntity<>(orderService.single(id), HttpStatus.OK);
     }
 
-    /*@RequestMapping(value = "", method = { RequestMethod.POST, RequestMethod.PUT })
-    public ResponseEntity<Order> createOrUpdate(@RequestBody Order order){
-        return new ResponseEntity<>(orderService.addOrUpdate(order),HttpStatus.OK);
-    }*/
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> remove(@PathVariable("id") Long id){
+        orderService.remove(id);
+        return ResponseEntity.noContent().build();
+    }
 
     
 }

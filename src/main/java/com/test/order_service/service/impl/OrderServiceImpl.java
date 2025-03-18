@@ -1,6 +1,7 @@
 package com.test.order_service.service.impl;
 
 import com.test.order_service.dao.OrderRepository;
+import com.test.order_service.exception.ResourceNotFoundException;
 import com.test.order_service.model.Order;
 import com.test.order_service.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class OrderServiceImpl implements OrderService {
     public Order single(Long id) {
         Optional<Order> order = orderRepository.findById(id);
         if(!order.isPresent()){
-            throw new RuntimeException("Order not found");
+            throw new ResourceNotFoundException("Order not found");
         }
         return order.get();
     }
